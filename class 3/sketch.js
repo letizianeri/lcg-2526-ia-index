@@ -4,8 +4,33 @@ let yMax = 600;
 let xRocket = xMax/2;
 let yRocket = yMax*0.6;
 
+let table;
+let star_img;
+
+function preload() { //funzione che serve a caricare le risorse e gli asset
+  table = loadTable("stars.csv", "csv", "header");
+  star_img = loadImage("star.png");
+}
+
 function setup() {
   createCanvas(xMax, yMax);
+  frameRate(180);
+}
+
+function drawSingleStarFromFile(index, posX, posY) {
+  let starSize = table.getNum(index, "starSize") //il nome della colonna è fornito dall'header del file csv
+  image(star_img, pmouseX, posY, starSize, starSize); //il risultato di loadImage sul file --> questa funzione plotta l'immagine a schermo, posX e posY sono fornite dall'utente, starSize dipende dal dataset
+
+}
+
+function drawStarsFromFile() {
+  for(let k = 0; k < table.getRowCount(); k++) { //getRowCount restituisce il numero di righe escluso l'header
+    let starX = (k*37) % width + (k%3) * 5;
+    let starY = (k*73) % height + (k%7);
+
+    drawSingleStarFromFile(k, starX, starY); //non fornisco la dimensione perché è presa dalla funzione direttamente dal dataset
+  }
+
 }
 
 function drawSingleStar(i, starX, starY, random_transparecy, random_size) {
@@ -31,7 +56,7 @@ function drawStars(num_stars = 120) {
     let starY = (i*73) % height + (i%7);
 
     let random_transparecy = random (150,255);
-    let random_size = random (6,10);
+    let random_size = random (5,9);
 
     drawSingleStar(i, starX, starY, random_transparecy, random_size)
   }
@@ -90,12 +115,17 @@ function draw() {
   textSize(20);
   text("mouseX: " + mouseX +  ",    mouseY: " + mouseY,20,20);  //stringa, x, y
 
+  push()
 
-drawStars(100);
+  noStroke();
 
+ // drawStars(100);
+  drawStarsFromFile();
 
-drawRocket(xRocket, yRocket);
+  drawRocket(xRocket, yRocket);
+  
+  pop();
 
-yRocket = moveRocket(yRocket, step=1);
+  yRocket = moveRocket(yRocket, step=1);
 
 }
