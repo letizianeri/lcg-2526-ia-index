@@ -10,6 +10,7 @@ let star_img;
 function preload() { //funzione che serve a caricare le risorse e gli asset
   table = loadTable("stars.csv", "csv", "header");
   star_img = loadImage("star.png");
+  rocket_img = loadImage("rocket.png");
 }
 
 function setup() {
@@ -19,7 +20,7 @@ function setup() {
 
 function drawSingleStarFromFile(index, posX, posY) {
   let starSize = table.getNum(index, "starSize") //il nome della colonna è fornito dall'header del file csv
-  image(star_img, pmouseX, posY, starSize, starSize); //il risultato di loadImage sul file --> questa funzione plotta l'immagine a schermo, posX e posY sono fornite dall'utente, starSize dipende dal dataset
+  image(star_img, posX, posY, starSize, starSize); //il risultato di loadImage sul file --> questa funzione plotta l'immagine a schermo, posX e posY sono fornite dall'utente, starSize dipende dal dataset
 
 }
 
@@ -32,6 +33,11 @@ function drawStarsFromFile() {
   }
 
 }
+
+function drawRocketFromFile(xRocket,yRocket) {
+  image(rocket_img, xRocket, yRocket,150,200);
+}
+
 
 function drawSingleStar(i, starX, starY, random_transparecy, random_size) {
   if(i % 2 == 0){ //--> tutti i numeri pari divisi x 2 danno come resto 0
@@ -63,6 +69,7 @@ function drawStars(num_stars = 120) {
 
 }
 
+/*
 function drawRocket(xRocket, yRocket) {
   push();
   fill(220);
@@ -92,7 +99,7 @@ function drawRocket(xRocket, yRocket) {
 
   triangle(xRocket+40,yRocket+90,xRocket+20,yRocket+90,xRocket+70,yRocket+120);
   pop();
-}
+}*/
 
 
 function moveRocket(yRocket, step=1){
@@ -107,7 +114,7 @@ function moveRocket(yRocket, step=1){
 
 
 function draw() {
-  background(20,24,40);
+  background("lightblue"); //(20,24,40)
   // mostrare un testo bianco
   // che dice le coordinate al mouse
   //sul foglio da disegno
@@ -122,8 +129,8 @@ function draw() {
  // drawStars(100);
   drawStarsFromFile();
 
-  drawRocket(xRocket, yRocket);
-  
+  drawRocketFromFile(xRocket, yRocket);
+
   pop();
 
   yRocket = moveRocket(yRocket, step=1);
