@@ -7,6 +7,11 @@ let yRocket = yMax*0.6;
 let table;
 let star_img;
 
+let tempo = 0;
+let scalaDiBase = 1;
+
+let ruota2 = 1;
+
 function preload() { //funzione che serve a caricare le risorse e gli asset
   table = loadTable("stars.csv", "csv", "header");
   star_img = loadImage("star.png");
@@ -15,7 +20,7 @@ function preload() { //funzione che serve a caricare le risorse e gli asset
 
 function setup() {
   createCanvas(xMax, yMax);
-  frameRate(180);
+  frameRate(10);
 }
 
 function drawSingleStarFromFile(index, posX, posY) {
@@ -34,9 +39,9 @@ function drawStarsFromFile() {
 
 }
 
-function drawRocketFromFile(xRocket,yRocket) {
-  image(rocket_img, xRocket, yRocket,150,200);
-}
+/*function drawRocketFromFile(xRocket,yRocket) {
+  image(rocket_img, xRocket, yRocket,140,200);
+}*/
 
 
 function drawSingleStar(i, starX, starY, random_transparecy, random_size) {
@@ -69,37 +74,46 @@ function drawStars(num_stars = 120) {
 
 }
 
-/*
-function drawRocket(xRocket, yRocket) {
+
+function drawRocket(xRocket, yRocket, scalaB=1, ruota=30) {
+
   push();
+
+  //rotate
+  translate(xRocket,yRocket);
+  rotate(ruota);
+
+  //scale
+  scale(scalaB);
+
   fill(220);
   stroke(40);
 
   rectMode(CENTER); // il rettangolo parte dal centro
-  rect(xRocket,yRocket+30,80,180,20);
+  rect(0,0+30,80,180,20);
   //
   //pop();
   
   //triangle
   fill(200,40,40);
   strokeWeight(2);
-  triangle(xRocket-40,yRocket-60,xRocket+40,yRocket-60,xRocket,yRocket-120);
+  triangle(-40,-60,+40,-60,0,-120);
 
   //circle
   fill(40,150,220);
   stroke(255);
   strokeWeight(3);
-  ellipse(xRocket,yRocket+30,48,48);
+  ellipse(0,+30,48,48);
 
   //triangolini
   fill(200,40,40);
   stroke(40);
   strokeWeight(2)
-  triangle(xRocket-40,yRocket+90,xRocket-20,yRocket+90,xRocket-70,yRocket+120);
+  triangle(-40,+90,-20,+90,-70,+120);
 
-  triangle(xRocket+40,yRocket+90,xRocket+20,yRocket+90,xRocket+70,yRocket+120);
+  triangle(+40,+90,+20,+90,+70,+120);
   pop();
-}*/
+}
 
 
 function moveRocket(yRocket, step=1){
@@ -122,6 +136,8 @@ function draw() {
   textSize(20);
   text("mouseX: " + mouseX +  ",    mouseY: " + mouseY,20,20);  //stringa, x, y
 
+  let variazioneScala = scalaDiBase * Math.abs(sin(tempo));
+
   push()
 
   noStroke();
@@ -129,10 +145,16 @@ function draw() {
  // drawStars(100);
   drawStarsFromFile();
 
-  drawRocketFromFile(xRocket, yRocket);
+  //drawRocketFromFile(xRocket, yRocket);
+  drawRocket(xRocket,yRocket, variazioneScala, ruota2);
+  ruota2 +=1;
 
   pop();
 
+  xRocket = (xRocket+1) % xMax;
   yRocket = moveRocket(yRocket, step=1);
+
+
+  tempo += 1;
 
 }
