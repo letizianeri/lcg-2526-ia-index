@@ -158,3 +158,16 @@ function draw() {
   tempo += 1;
 
 }
+
+function mousePressed() {
+
+  //l'animazione si ferma e riparte al click
+
+  if(isLooping()) {
+    noLoop();
+  } else {
+    loop();
+  }
+
+}
+
