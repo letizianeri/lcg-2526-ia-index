@@ -84,8 +84,12 @@ function draw() {
   push()
 
   noStroke();
-  drawStarsFromFile();
+ // drawStarsFromFile();
 
+  //disegnare la stella più piccola e la stella più grossa
+  //stars_valid
+  image(star_img, 50, 50, min(stars_valid), min(stars_valid));
+  image(star_img, 50, 50, max(stars_valid), max(stars_valid));
   pop();
 
 }
